@@ -4,7 +4,18 @@ import styles from "./Searchbar.module.scss";
 import searchIcon from "../../assets/images/icons/search.svg";
 class Searchbar extends Component {
 	handleChange = (event) => {
-		this.props.onChange(event, this.props.caseSensitive || false);
+		if (event.target.value.length) {
+			const resultList = this.props.dataList.filter((dataObject) => {
+				if (this.props.caseSensitive) {
+					return dataObject[this.props.searchKey].includes(event.target.value);
+				} else {
+					return dataObject[this.props.searchKey]
+						.toLowerCase()
+						.includes(event.target.value.toLowerCase());
+				}
+			});
+			this.props.resultCallback(resultList);
+		}
 	};
 	render() {
 		return (
@@ -30,11 +41,13 @@ class Searchbar extends Component {
 
 Searchbar.propTypes = {
 	placeholder: PropTypes.string,
-	onChange: PropTypes.func.isRequired,
 	className: PropTypes.string,
 	autoFocus: PropTypes.bool,
 	caseSensitive: PropTypes.bool,
 	alignIcon: PropTypes.oneOf(["left", "right"]),
+	resultCallback: PropTypes.func.isRequired,
+	dataList: PropTypes.array.isRequired,
+	searchKey: PropTypes.string.isRequired,
 };
 
 Searchbar.defaultProps = {
