@@ -1,39 +1,58 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import styles from "./Searchbar.module.scss";
-import searchIcon from "../../assets/images/icons/search.svg";
 class Searchbar extends Component {
-	handleChange = (event) => {
-		if (event.target.value.length) {
+	searchContent = (event) => {
+		event.preventDefault();
+		let searchInputValue = this.props.resultOnSubmit
+			? event.target.searchInput.value
+			: event.target.input;
+		if (searchInputValue.length) {
 			const resultList = this.props.dataList.filter((dataObject) => {
 				if (this.props.caseSensitive) {
-					return dataObject[this.props.searchKey].includes(event.target.value);
+					return dataObject[this.props.searchKey].includes(searchInputValue);
 				} else {
 					return dataObject[this.props.searchKey]
 						.toLowerCase()
-						.includes(event.target.value.toLowerCase());
+						.includes(searchInputValue.toLowerCase());
 				}
 			});
 			this.props.resultCallback(resultList);
 		}
 	};
 	render() {
+		let {
+			className,
+			alignIcon,
+			placeholder,
+			autoFocus,
+			resultOnSubmit,
+			iconColor,
+		} = this.props;
 		return (
 			<div
 				className={`${styles["inputContainer"]} ${
 					styles[this.props.alignIcon]
-				} ${
-					this.props.className ? this.props.className : styles["defaultInput"]
-				} ${this.props.alignIcon}`}
+				} ${className ? className : styles["defaultInput"]} ${alignIcon}`}
 			>
-				<img src={searchIcon} alt="searchIcon" />
-				<input
-					className={styles["universalInput"]}
-					placeholder={this.props.placeholder}
-					onChange={this.handleChange}
-					type="text"
-					autoFocus={this.props.autoFocus}
-				/>
+				<svg
+					className={styles["searchIcon"]}
+					xmlns="http://www.w3.org/2000/svg"
+					viewBox="0 0 512 512"
+					fill={iconColor.length ? iconColor : "black"}
+				>
+					<path d="M508.875 493.792L353.089 338.005c32.358-35.927 52.245-83.296 52.245-135.339C405.333 90.917 314.417 0 202.667 0S0 90.917 0 202.667s90.917 202.667 202.667 202.667c52.043 0 99.411-19.887 135.339-52.245l155.786 155.786a10.634 10.634 0 007.542 3.125c2.729 0 5.458-1.042 7.542-3.125 4.166-4.167 4.166-10.917-.001-15.083zM202.667 384c-99.979 0-181.333-81.344-181.333-181.333S102.688 21.333 202.667 21.333 384 102.677 384 202.667 302.646 384 202.667 384z" />
+				</svg>
+				<form onSubmit={resultOnSubmit ? this.searchContent : null}>
+					<input
+						name="searchInput"
+						className={styles["universalInput"]}
+						placeholder={placeholder}
+						onChange={!resultOnSubmit ? this.searchContent : null}
+						type="text"
+						autoFocus={autoFocus}
+					/>
+				</form>
 			</div>
 		);
 	}
@@ -48,6 +67,8 @@ Searchbar.propTypes = {
 	resultCallback: PropTypes.func.isRequired,
 	dataList: PropTypes.array.isRequired,
 	searchKey: PropTypes.string.isRequired,
+	resultOnSubmit: PropTypes.bool,
+	iconColor: PropTypes.string,
 };
 
 Searchbar.defaultProps = {
@@ -56,6 +77,8 @@ Searchbar.defaultProps = {
 	autoFocus: false,
 	caseSensitive: false,
 	alignIcon: "right",
+	resultOnSubmit: false,
+	iconColor: "",
 };
 
 export default Searchbar;

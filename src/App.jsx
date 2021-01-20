@@ -22,7 +22,8 @@ class App extends Component {
 				<Searchbar
 					dataList={this.state.data}
 					searchKey="name"
-					alignIcon="left"
+					alignIcon="right"
+					resultOnSubmit={true}
 					resultCallback={this.fetchResult}
 					caseSensitive={false}
 					className="searchInput"
