@@ -18,12 +18,11 @@ class App extends Component {
 		return (
 			<div className="AppContainer">
 				<h1>Universal Search</h1>
-				{/* Pass data and perform search in Search */}
 				<Searchbar
 					dataList={this.state.data}
 					searchKey="name"
 					alignIcon="right"
-					resultOnSubmit={true}
+					resultOnSubmit={false}
 					resultCallback={this.fetchResult}
 					caseSensitive={false}
 					className="searchInput"

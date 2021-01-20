@@ -1,12 +1,29 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import styles from "./Searchbar.module.scss";
+
+/**
+ * Renders a <Searchbar /> component
+ * @component
+ * @example
+ *	<Searchbar
+ *		dataList={this.state.data}
+ *		searchKey="name"
+ *		alignIcon="right"
+ *		resultOnSubmit={true}
+ *		resultCallback={this.fetchResult}
+ *		caseSensitive={false}
+ *		className="searchInput"
+ *		autoFocus={true}
+ *		placeholder="Search"
+ *	/>
+ */
 class Searchbar extends Component {
 	searchContent = (event) => {
 		event.preventDefault();
 		let searchInputValue = this.props.resultOnSubmit
 			? event.target.searchInput.value
-			: event.target.input;
+			: event.target.value;
 		if (searchInputValue.length) {
 			const resultList = this.props.dataList.filter((dataObject) => {
 				if (this.props.caseSensitive) {
@@ -45,6 +62,7 @@ class Searchbar extends Component {
 				</svg>
 				<form onSubmit={resultOnSubmit ? this.searchContent : null}>
 					<input
+						id="searchInput"
 						name="searchInput"
 						className={styles["universalInput"]}
 						placeholder={placeholder}
@@ -59,15 +77,45 @@ class Searchbar extends Component {
 }
 
 Searchbar.propTypes = {
-	placeholder: PropTypes.string,
-	className: PropTypes.string,
-	autoFocus: PropTypes.bool,
-	caseSensitive: PropTypes.bool,
-	alignIcon: PropTypes.oneOf(["left", "right"]),
+	/**
+	 * Callback function when result is generated
+	 */
 	resultCallback: PropTypes.func.isRequired,
+	/**
+	 * List on which search is to be performed
+	 */
 	dataList: PropTypes.array.isRequired,
+	/**
+	 * Key or item you want to search
+	 */
 	searchKey: PropTypes.string.isRequired,
+	/**
+	 * If true result would be genrated onSubmit else onChange
+	 */
 	resultOnSubmit: PropTypes.bool,
+	/**
+	 * SCSS className
+	 */
+	className: PropTypes.string,
+	/**
+	 * Input placeholder
+	 */
+	placeholder: PropTypes.string,
+	/**
+	 * Input autofocus
+	 */
+	autoFocus: PropTypes.bool,
+	/**
+	 * Should search be caseSesnsitive
+	 */
+	caseSensitive: PropTypes.bool,
+	/**
+	 * Align search icon to left or right
+	 */
+	alignIcon: PropTypes.oneOf(["left", "right"]),
+	/**
+	 * Color of search Icon
+	 */
 	iconColor: PropTypes.string,
 };
 
