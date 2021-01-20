@@ -9,7 +9,6 @@ class App extends Component {
 	onChange = (event, caseSensitive) => {
 		if (event.target.value.length) {
 			const resultList = this.state.data.filter((partners) => {
-				console.log("Case sensitive=> ", caseSensitive);
 				if (caseSensitive) {
 					return partners.name.includes(event.target.value);
 				} else {
@@ -30,11 +29,13 @@ class App extends Component {
 		return (
 			<div className="AppContainer">
 				<h1>Universal Search</h1>
+				{/* Pass data and perform search in Search */}
 				<Searchbar
-					caseSensitive={false}
+					caseSensitive={true}
 					onChange={this.onChange}
 					className="searchInput"
 					autoFocus={true}
+					placeholder="Search"
 				/>
 			</div>
 		);

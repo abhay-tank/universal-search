@@ -20,9 +20,4 @@
 	transition: 300ms;
 	background-color: $orange-yellow-crayola;
 	color: $midnight-green-eagle-green;
-	&:focus {
-		outline: none;
-		background-color: $paradise-pink;
-		color: $orange-yellow-crayola;
-	}
 }
