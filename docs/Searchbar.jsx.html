@@ -114,7 +114,7 @@ class Searchbar extends Component {
 		event.preventDefault();
 		let searchInputValue = this.props.resultOnSubmit
 			? event.target.searchInput.value
-			: event.target.input;
+			: event.target.value;
 		if (searchInputValue.length) {
 			const resultList = this.props.dataList.filter((dataObject) => {
 				if (this.props.caseSensitive) {
@@ -153,6 +153,7 @@ class Searchbar extends Component {
 				&lt;/svg>
 				&lt;form onSubmit={resultOnSubmit ? this.searchContent : null}>
 					&lt;input
+						id="searchInput"
 						name="searchInput"
 						className={styles["universalInput"]}
 						placeholder={placeholder}
@@ -168,15 +169,15 @@ class Searchbar extends Component {
 
 Searchbar.propTypes = {
 	/**
-	 * Callback function when result is generated
+	 * Callback function when result is generated (Required)
 	 */
 	resultCallback: PropTypes.func.isRequired,
 	/**
-	 * List on which search is to be performed
+	 * List on which search is to be performed (Required)
 	 */
 	dataList: PropTypes.array.isRequired,
 	/**
-	 * Key or item you want to search
+	 * Key or item you want to search (Required)
 	 */
 	searchKey: PropTypes.string.isRequired,
 	/**

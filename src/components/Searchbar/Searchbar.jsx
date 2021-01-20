@@ -78,15 +78,15 @@ class Searchbar extends Component {
 
 Searchbar.propTypes = {
 	/**
-	 * Callback function when result is generated
+	 * Callback function when result is generated (Required)
 	 */
 	resultCallback: PropTypes.func.isRequired,
 	/**
-	 * List on which search is to be performed
+	 * List on which search is to be performed (Required)
 	 */
 	dataList: PropTypes.array.isRequired,
 	/**
-	 * Key or item you want to search
+	 * Key or item you want to search (Required)
 	 */
 	searchKey: PropTypes.string.isRequired,
 	/**
