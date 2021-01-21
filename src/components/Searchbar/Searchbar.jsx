@@ -9,13 +9,14 @@ import styles from "./Searchbar.module.scss";
  *	<Searchbar
  *		dataList={this.state.data}
  *		searchKey="name"
- *		alignIcon="right"
+ *		caseSensitive={false}
  *		resultOnSubmit={true}
  *		resultCallback={this.fetchResult}
- *		caseSensitive={false}
  *		className="searchInput"
+ *		alignIcon="right"
  *		autoFocus={true}
  *		placeholder="Search"
+ * 		iconColor="black"
  *	/>
  */
 class Searchbar extends Component {
@@ -126,7 +127,7 @@ Searchbar.defaultProps = {
 	caseSensitive: false,
 	alignIcon: "right",
 	resultOnSubmit: false,
-	iconColor: "",
+	iconColor: "black",
 };
 
 export default Searchbar;
