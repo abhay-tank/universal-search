@@ -8,7 +8,7 @@ class App extends Component {
 	};
 	componentDidMount = () => {
 		this.setState((state, props) => ({
-			data: JSON.parse(JSON.stringify(jsonData.partners)),
+			data: jsonData.partners,
 		}));
 	};
 	fetchResult = (result) => {
@@ -20,7 +20,7 @@ class App extends Component {
 				<h1>Universal Search</h1>
 				<Searchbar
 					dataList={this.state.data}
-					searchKey="name"
+					searchKeys={["name", "description"]}
 					alignIcon="right"
 					resultOnSubmit={false}
 					resultCallback={this.fetchResult}

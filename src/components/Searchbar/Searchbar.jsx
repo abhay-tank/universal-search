@@ -8,7 +8,7 @@ import styles from "./Searchbar.module.scss";
  * @example
  *	<Searchbar
  *		dataList={this.state.data}
- *		searchKey="name"
+ *		searchKeys={["name", "description"]}
  *		caseSensitive={false}
  *		resultOnSubmit={true}
  *		resultCallback={this.fetchResult}
@@ -27,12 +27,19 @@ class Searchbar extends Component {
 			: event.target.value;
 		if (searchInputValue.length) {
 			const resultList = this.props.dataList.filter((dataObject) => {
+				const dataObjectKeys = Object.keys(dataObject);
 				if (this.props.caseSensitive) {
-					return dataObject[this.props.searchKey].includes(searchInputValue);
+					return this.props.searchKeys.some((searchKey) => {
+						return dataObjectKeys.includes(searchKey)
+							? dataObject[searchKey].includes(searchInputValue)
+							: false;
+					});
 				} else {
-					return dataObject[this.props.searchKey]
-						.toLowerCase()
-						.includes(searchInputValue.toLowerCase());
+					return this.props.searchKeys.some((searchKey) => {
+						return dataObjectKeys.includes(searchKey)
+							? dataObject[searchKey].toLowerCase().includes(searchInputValue)
+							: false;
+					});
 				}
 			});
 			this.props.resultCallback(resultList);
@@ -49,9 +56,9 @@ class Searchbar extends Component {
 		} = this.props;
 		return (
 			<div
-				className={`${styles["inputContainer"]} ${
-					styles[this.props.alignIcon]
-				} ${className ? className : styles["defaultInput"]} ${alignIcon}`}
+				className={`${styles["inputContainer"]} ${styles[alignIcon]} ${
+					className ? className : styles["defaultInput"]
+				} ${alignIcon}`}
 			>
 				<svg
 					className={styles["searchIcon"]}
@@ -87,9 +94,9 @@ Searchbar.propTypes = {
 	 */
 	dataList: PropTypes.array.isRequired,
 	/**
-	 * Key or item you want to search (Required)
+	 * Keys or items you want to search (Required)
 	 */
-	searchKey: PropTypes.string.isRequired,
+	searchKeys: PropTypes.arrayOf(PropTypes.string),
 	/**
 	 * If true result would be genrated onSubmit else onChange
 	 */
