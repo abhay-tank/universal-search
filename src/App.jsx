@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import Searchbar from "./components/Searchbar/Searchbar";
 import "./App.scss";
 import jsonData from "./data/sample-data.json";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import { faCoffee } from "@fortawesome/free-solid-svg-icons";
 class App extends Component {
 	state = {
 		data: [],

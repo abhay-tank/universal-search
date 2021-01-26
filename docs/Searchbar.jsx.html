@@ -72,7 +72,7 @@
             
             <nav>
                 
-                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Components</h3><ul><li><a href="Searchbar.html">Searchbar</a></li></ul></div>
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Components</h3><ul><li><a href="Searchbar.html">Searchbar</a></li></ul><h3>Global</h3><ul><li><a href="global.html#handleOnChange">handleOnChange</a></li><li><a href="global.html#handleOnSubmit">handleOnSubmit</a></li><li><a href="global.html#searchContent">searchContent</a></li></ul></div>
                 
             </nav>
         </div>
@@ -92,14 +92,15 @@
             <pre class="prettyprint source linenums"><code>import React, { Component } from "react";
 import PropTypes from "prop-types";
 import styles from "./Searchbar.module.scss";
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
 /**
  * Renders a &lt;Searchbar /> component
  * @component
  * @example
  *	&lt;Searchbar
  *		dataList={this.state.data}
- *		searchKey="name"
+ *		searchKeys={["name", "description"]}
  *		caseSensitive={false}
  *		resultOnSubmit={true}
  *		resultCallback={this.fetchResult}
@@ -111,55 +112,140 @@ import styles from "./Searchbar.module.scss";
  *	/>
  */
 class Searchbar extends Component {
-	searchContent = (event) => {
-		event.preventDefault();
-		let searchInputValue = this.props.resultOnSubmit
-			? event.target.searchInput.value
-			: event.target.value;
-		if (searchInputValue.length) {
-			const resultList = this.props.dataList.filter((dataObject) => {
-				if (this.props.caseSensitive) {
-					return dataObject[this.props.searchKey].includes(searchInputValue);
-				} else {
-					return dataObject[this.props.searchKey]
-						.toLowerCase()
-						.includes(searchInputValue.toLowerCase());
+	state = {
+		searchInputValue: "",
+	};
+	/**
+	 * @function searchContent
+	 * @param {Event} event
+	 * @fires props.resultCallback
+	 */
+	searchContent = () => {
+		/**
+		 * Check if input is not empty and is a valid string.
+		 */
+		if (this.state.searchInputValue.trim().length) {
+			/**
+			 * @property  {Array}
+			 * Placeholder for props.searchKeys.
+			 */
+			const searchKeys = this.props.searchKeys;
+			/**
+			 * @property {Object}
+			 * Stores searchKey and array of matched pattern objects. Imagine it as bucket for sorting data objects. Data Object would be sorted out in any one of the buckets.
+			 * If we search for pattern "Jon" and key "name". All the objects with key "name" having pattern "Jon" would be stored in "nameData".
+			 * If we search for pattern "Engineer" and key "description". All the objects with key "description" having pattern "Engineer" would be stored in "descriptionData".
+			 * @example
+			 * result = {
+			 * 	nameData: [
+			 * 		{
+			 * 			name: "Some awesome name having Jon",
+			 * 			description: "some description having X",
+			 * 			...
+			 * 		},
+			 * 	],
+			 * 	descriptionData: [
+			 * 		{
+			 * 			name: "Some other awesome name",
+			 * 			description: "some description having Engineer",
+			 * 		},
+			 * 	]
+			 * }
+			 */
+			let result = {};
+			/**
+			 * @property {Array}
+			 * For storing final result.
+			 * Initialized with keys in pattern of "searchKeyData" and empty array as value.
+			 */
+			let resultList = [];
+			searchKeys.forEach((searchKey) => {
+				result[`${searchKey}Data`] = [];
+			});
+			this.props.dataList.forEach((dataObject) => {
+				/**
+				 * Iterate searchKeys and search dataObject[searchKey] for pattern.
+				 * If data is found, push object to result[searchKeyData] array.
+				 */
+				for (
+					let searchKeyIndex = 0;
+					searchKeyIndex &lt; searchKeys.length;
+					searchKeyIndex++
+				) {
+					const key = searchKeys[searchKeyIndex];
+					if (dataObject[key]) {
+						if (this.props.caseSensitive) {
+							if (dataObject[key].includes(this.state.searchInputValue)) {
+								result[`${key}Data`].push(dataObject);
+								break;
+							}
+						} else {
+							if (
+								dataObject[key]
+									.toLowerCase()
+									.includes(this.state.searchInputValue.toLowerCase())
+							) {
+								result[`${key}Data`].push(dataObject);
+								break;
+							}
+						}
+					}
 				}
 			});
+			/**
+			 * Create sorted list of result with order of props.searchKeys
+			 */
+			searchKeys.forEach((searchKey) => {
+				resultList.push(...result[`${searchKey}Data`]);
+			});
+			/**
+			 * Execute callback and return result.
+			 */
 			this.props.resultCallback(resultList);
 		}
 	};
+
+	/**
+	 * @function handleOnSubmit
+	 * @param {Event} event
+	 * @fires searchContent
+	 * Sets searchInputValue inside state and executes searchContent.
+	 */
+	handleOnSubmit = (event) => {
+		event.preventDefault();
+		this.setState({ searchInputValue: event.target.searchInput.value });
+		this.searchContent();
+	};
+	/**
+	 * @function handleOnChange
+	 * @param {Event} event
+	 * @fires searchContent
+	 * Sets searchInputValue inside state and executes searchContent if resultOnSubmit is false.
+	 */
+	handleOnChange = (event) => {
+		this.setState({ searchInputValue: event.target.value });
+		if (!this.props.resultOnSubmit) {
+			this.searchContent();
+		}
+	};
 	render() {
-		let {
-			className,
-			alignIcon,
-			placeholder,
-			autoFocus,
-			resultOnSubmit,
-			iconColor,
-		} = this.props;
+		let { className, alignIcon, icon, placeholder, autoFocus } = this.props;
 		return (
 			&lt;div
-				className={`${styles["inputContainer"]} ${
-					styles[this.props.alignIcon]
-				} ${className ? className : styles["defaultInput"]} ${alignIcon}`}
+				className={`${styles["inputContainer"]} ${styles[alignIcon]} ${
+					className ? className : styles["defaultInput"]
+				} ${alignIcon}`}
 			>
-				&lt;svg
-					className={styles["searchIcon"]}
-					xmlns="http://www.w3.org/2000/svg"
-					viewBox="0 0 512 512"
-					fill={iconColor.length ? iconColor : "black"}
-				>
-					&lt;path d="M508.875 493.792L353.089 338.005c32.358-35.927 52.245-83.296 52.245-135.339C405.333 90.917 314.417 0 202.667 0S0 90.917 0 202.667s90.917 202.667 202.667 202.667c52.043 0 99.411-19.887 135.339-52.245l155.786 155.786a10.634 10.634 0 007.542 3.125c2.729 0 5.458-1.042 7.542-3.125 4.166-4.167 4.166-10.917-.001-15.083zM202.667 384c-99.979 0-181.333-81.344-181.333-181.333S102.688 21.333 202.667 21.333 384 102.677 384 202.667 302.646 384 202.667 384z" />
-				&lt;/svg>
-				&lt;form onSubmit={resultOnSubmit ? this.searchContent : null}>
+				{icon}
+				&lt;form onSubmit={this.handleOnSubmit}>
 					&lt;input
 						id="searchInput"
 						name="searchInput"
 						className={styles["universalInput"]}
 						placeholder={placeholder}
-						onChange={!resultOnSubmit ? this.searchContent : null}
+						onChange={this.handleOnChange}
 						type="text"
+						value={this.state.searchInputValue}
 						autoFocus={autoFocus}
 					/>
 				&lt;/form>
@@ -178,9 +264,9 @@ Searchbar.propTypes = {
 	 */
 	dataList: PropTypes.array.isRequired,
 	/**
-	 * Key or item you want to search (Required)
+	 * Keys or items you want to search (Required)
 	 */
-	searchKey: PropTypes.string.isRequired,
+	searchKeys: PropTypes.arrayOf(PropTypes.string),
 	/**
 	 * If true result would be genrated onSubmit else onChange
 	 */
@@ -206,9 +292,9 @@ Searchbar.propTypes = {
 	 */
 	alignIcon: PropTypes.oneOf(["left", "right"]),
 	/**
-	 * Color of search Icon
+	 * Icon displayed along side input field
 	 */
-	iconColor: PropTypes.string,
+	icon: PropTypes.instanceOf(FontAwesomeIcon),
 };
 
 Searchbar.defaultProps = {
@@ -218,7 +304,7 @@ Searchbar.defaultProps = {
 	caseSensitive: false,
 	alignIcon: "right",
 	resultOnSubmit: false,
-	iconColor: "black",
+	icon: &lt;FontAwesomeIcon icon={faSearch} />,
 };
 
 export default Searchbar;

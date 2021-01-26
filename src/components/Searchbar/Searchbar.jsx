@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import styles from "./Searchbar.module.scss";
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
 /**
  * Renders a <Searchbar /> component
  * @component
@@ -113,12 +114,23 @@ class Searchbar extends Component {
 		}
 	};
 
+	/**
+	 * @function handleOnSubmit
+	 * @param {Event} event
+	 * @fires searchContent
+	 * Sets searchInputValue inside state and executes searchContent.
+	 */
 	handleOnSubmit = (event) => {
 		event.preventDefault();
 		this.setState({ searchInputValue: event.target.searchInput.value });
 		this.searchContent();
 	};
-
+	/**
+	 * @function handleOnChange
+	 * @param {Event} event
+	 * @fires searchContent
+	 * Sets searchInputValue inside state and executes searchContent if resultOnSubmit is false.
+	 */
 	handleOnChange = (event) => {
 		this.setState({ searchInputValue: event.target.value });
 		if (!this.props.resultOnSubmit) {
@@ -126,27 +138,14 @@ class Searchbar extends Component {
 		}
 	};
 	render() {
-		let {
-			className,
-			alignIcon,
-			placeholder,
-			autoFocus,
-			iconColor,
-		} = this.props;
+		let { className, alignIcon, icon, placeholder, autoFocus } = this.props;
 		return (
 			<div
 				className={`${styles["inputContainer"]} ${styles[alignIcon]} ${
 					className ? className : styles["defaultInput"]
 				} ${alignIcon}`}
 			>
-				<svg
-					className={styles["searchIcon"]}
-					xmlns="http://www.w3.org/2000/svg"
-					viewBox="0 0 512 512"
-					fill={iconColor.length ? iconColor : "black"}
-				>
-					<path d="M508.875 493.792L353.089 338.005c32.358-35.927 52.245-83.296 52.245-135.339C405.333 90.917 314.417 0 202.667 0S0 90.917 0 202.667s90.917 202.667 202.667 202.667c52.043 0 99.411-19.887 135.339-52.245l155.786 155.786a10.634 10.634 0 007.542 3.125c2.729 0 5.458-1.042 7.542-3.125 4.166-4.167 4.166-10.917-.001-15.083zM202.667 384c-99.979 0-181.333-81.344-181.333-181.333S102.688 21.333 202.667 21.333 384 102.677 384 202.667 302.646 384 202.667 384z" />
-				</svg>
+				{icon}
 				<form onSubmit={this.handleOnSubmit}>
 					<input
 						id="searchInput"
@@ -202,9 +201,9 @@ Searchbar.propTypes = {
 	 */
 	alignIcon: PropTypes.oneOf(["left", "right"]),
 	/**
-	 * Color of search Icon
+	 * Icon displayed along side input field
 	 */
-	iconColor: PropTypes.string,
+	icon: PropTypes.instanceOf(FontAwesomeIcon),
 };
 
 Searchbar.defaultProps = {
@@ -214,7 +213,7 @@ Searchbar.defaultProps = {
 	caseSensitive: false,
 	alignIcon: "right",
 	resultOnSubmit: false,
-	iconColor: "black",
+	icon: <FontAwesomeIcon icon={faSearch} />,
 };
 
 export default Searchbar;
