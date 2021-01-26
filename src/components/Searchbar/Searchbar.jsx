@@ -20,24 +20,19 @@ import styles from "./Searchbar.module.scss";
  *	/>
  */
 class Searchbar extends Component {
+	state = {
+		searchInputValue: "",
+	};
 	/**
 	 * @function searchContent
 	 * @param {Event} event
 	 * @fires props.resultCallback
 	 */
-	searchContent = (event) => {
-		event.preventDefault();
-		/**
-		 * @property {String}
-		 * user input text from input field.
-		 */
-		let searchInputValue = this.props.resultOnSubmit
-			? event.target.searchInput.value
-			: event.target.value;
+	searchContent = () => {
 		/**
 		 * Check if input is not empty and is a valid string.
 		 */
-		if (searchInputValue.trim().length) {
+		if (this.state.searchInputValue.trim().length) {
 			/**
 			 * @property  {Array}
 			 * Placeholder for props.searchKeys.
@@ -88,7 +83,7 @@ class Searchbar extends Component {
 					const key = searchKeys[searchKeyIndex];
 					if (dataObject[key]) {
 						if (this.props.caseSensitive) {
-							if (dataObject[key].includes(searchInputValue)) {
+							if (dataObject[key].includes(this.state.searchInputValue)) {
 								result[`${key}Data`].push(dataObject);
 								break;
 							}
@@ -96,7 +91,7 @@ class Searchbar extends Component {
 							if (
 								dataObject[key]
 									.toLowerCase()
-									.includes(searchInputValue.toLowerCase())
+									.includes(this.state.searchInputValue.toLowerCase())
 							) {
 								result[`${key}Data`].push(dataObject);
 								break;
@@ -117,13 +112,25 @@ class Searchbar extends Component {
 			this.props.resultCallback(resultList);
 		}
 	};
+
+	handleOnSubmit = (event) => {
+		event.preventDefault();
+		this.setState({ searchInputValue: event.target.searchInput.value });
+		this.searchContent();
+	};
+
+	handleOnChange = (event) => {
+		this.setState({ searchInputValue: event.target.value });
+		if (!this.props.resultOnSubmit) {
+			this.searchContent();
+		}
+	};
 	render() {
 		let {
 			className,
 			alignIcon,
 			placeholder,
 			autoFocus,
-			resultOnSubmit,
 			iconColor,
 		} = this.props;
 		return (
@@ -140,14 +147,15 @@ class Searchbar extends Component {
 				>
 					<path d="M508.875 493.792L353.089 338.005c32.358-35.927 52.245-83.296 52.245-135.339C405.333 90.917 314.417 0 202.667 0S0 90.917 0 202.667s90.917 202.667 202.667 202.667c52.043 0 99.411-19.887 135.339-52.245l155.786 155.786a10.634 10.634 0 007.542 3.125c2.729 0 5.458-1.042 7.542-3.125 4.166-4.167 4.166-10.917-.001-15.083zM202.667 384c-99.979 0-181.333-81.344-181.333-181.333S102.688 21.333 202.667 21.333 384 102.677 384 202.667 302.646 384 202.667 384z" />
 				</svg>
-				<form onSubmit={resultOnSubmit ? this.searchContent : null}>
+				<form onSubmit={this.handleOnSubmit}>
 					<input
 						id="searchInput"
 						name="searchInput"
 						className={styles["universalInput"]}
 						placeholder={placeholder}
-						onChange={!resultOnSubmit ? this.searchContent : null}
+						onChange={this.handleOnChange}
 						type="text"
+						value={this.state.searchInputValue}
 						autoFocus={autoFocus}
 					/>
 				</form>
