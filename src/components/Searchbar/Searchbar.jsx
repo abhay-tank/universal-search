@@ -20,28 +20,100 @@ import styles from "./Searchbar.module.scss";
  *	/>
  */
 class Searchbar extends Component {
+	/**
+	 * @function searchContent
+	 * @param {Event} event
+	 * @fires props.resultCallback
+	 */
 	searchContent = (event) => {
 		event.preventDefault();
+		/**
+		 * @property {String}
+		 * user input text from input field.
+		 */
 		let searchInputValue = this.props.resultOnSubmit
 			? event.target.searchInput.value
 			: event.target.value;
-		if (searchInputValue.length) {
-			const resultList = this.props.dataList.filter((dataObject) => {
-				const dataObjectKeys = Object.keys(dataObject);
-				if (this.props.caseSensitive) {
-					return this.props.searchKeys.some((searchKey) => {
-						return dataObjectKeys.includes(searchKey)
-							? dataObject[searchKey].includes(searchInputValue)
-							: false;
-					});
-				} else {
-					return this.props.searchKeys.some((searchKey) => {
-						return dataObjectKeys.includes(searchKey)
-							? dataObject[searchKey].toLowerCase().includes(searchInputValue)
-							: false;
-					});
+		/**
+		 * Check if input is not empty and is a valid string.
+		 */
+		if (searchInputValue.trim().length) {
+			/**
+			 * @property  {Array}
+			 * Placeholder for props.searchKeys.
+			 */
+			const searchKeys = this.props.searchKeys;
+			/**
+			 * @property {Object}
+			 * Stores searchKey and array of matched pattern objects. Imagine it as bucket for sorting data objects. Data Object would be sorted out in any one of the buckets.
+			 * If we search for pattern "Jon" and key "name". All the objects with key "name" having pattern "Jon" would be stored in "nameData".
+			 * If we search for pattern "Engineer" and key "description". All the objects with key "description" having pattern "Engineer" would be stored in "descriptionData".
+			 * @example
+			 * result = {
+			 * 	nameData: [
+			 * 		{
+			 * 			name: "Some awesome name having Jon",
+			 * 			description: "some description having X",
+			 * 			...
+			 * 		},
+			 * 	],
+			 * 	descriptionData: [
+			 * 		{
+			 * 			name: "Some other awesome name",
+			 * 			description: "some description having Engineer",
+			 * 		},
+			 * 	]
+			 * }
+			 */
+			let result = {};
+			/**
+			 * @property {Array}
+			 * For storing final result.
+			 * Initialized with keys in pattern of "searchKeyData" and empty array as value.
+			 */
+			let resultList = [];
+			searchKeys.forEach((searchKey) => {
+				result[`${searchKey}Data`] = [];
+			});
+			this.props.dataList.forEach((dataObject) => {
+				/**
+				 * Iterate searchKeys and search dataObject[searchKey] for pattern.
+				 * If data is found, push object to result[searchKeyData] array.
+				 */
+				for (
+					let searchKeyIndex = 0;
+					searchKeyIndex < searchKeys.length;
+					searchKeyIndex++
+				) {
+					const key = searchKeys[searchKeyIndex];
+					if (dataObject[key]) {
+						if (this.props.caseSensitive) {
+							if (dataObject[key].includes(searchInputValue)) {
+								result[`${key}Data`].push(dataObject);
+								break;
+							}
+						} else {
+							if (
+								dataObject[key]
+									.toLowerCase()
+									.includes(searchInputValue.toLowerCase())
+							) {
+								result[`${key}Data`].push(dataObject);
+								break;
+							}
+						}
+					}
 				}
 			});
+			/**
+			 * Create sorted list of result with order of props.searchKeys
+			 */
+			searchKeys.forEach((searchKey) => {
+				resultList.push(...result[`${searchKey}Data`]);
+			});
+			/**
+			 * Execute callback and return result.
+			 */
 			this.props.resultCallback(resultList);
 		}
 	};
