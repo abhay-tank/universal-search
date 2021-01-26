@@ -19,7 +19,7 @@ let arrayOfObjects = [
   ...
 ];
 
-let searchKey = "name";
+let searchKeys = ["name", "email"];
 
 const fetchResult = (result) => {
   console.log(result)
@@ -31,7 +31,7 @@ const fetchResult = (result) => {
 ```JSX
 <Searchbar
 	dataList={arrayOfObjects}
-	searchKey={searchKey}
+	searchKeys={searchKeys}
 	resultCallback={fetchResult}
 	caseSensitive={false}
 	resultOnSubmit={true}
@@ -39,23 +39,23 @@ const fetchResult = (result) => {
 	alignIcon="right"
 	autoFocus={true}
 	placeholder="Search Name"
-	iconColor="black"
+  icon={<FontAwesomeIcon icon={faSearch} />}
 />
 ```
 
 # Props
 
 - ### _REQUIRED_ **dataList** - Array of objects on which search is to be performed.
-- ### _REQUIRED_ **searchKey** - Object Key on which search would be performed.
+- ### _REQUIRED_ **searchKeys** - Array of object Keys on which search would be performed.
 - ### _REQUIRED_ **resultCallback** - Function to handle result upon search completion.
 - ### **caseSensitive** - Should search be caseSesnsitive. Default `false`.
 - ### **resultOnSubmit** - If true result would be generated onSubmit else onChange. Default `false`.
 - ### **className** - SCSS className. Default `""`.
 - ### **alignIcon** - Align search icon to left or right. Default `"right"`.
-- ### **autoFocus** - Input autofocus. Default `false`.
+
 - ### **autoFocus** - Input autofocus. Default `false`.
 - ### **placeholder** - Input placeholder. Default `""`.
-- ### **iconColor** - Color of search Icon. Default `"black"`.
+- ### **icon** - FontAwesome icon that should be displayed along side input field.
 
 # Run project
 
