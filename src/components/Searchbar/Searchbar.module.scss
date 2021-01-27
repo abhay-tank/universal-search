@@ -5,6 +5,9 @@
 	.searchIcon {
 		height: 1.5rem;
 	}
+	form {
+		width: 100%;
+	}
 }
 
 .defaultInput {
@@ -31,7 +34,7 @@
 	margin: 0 0.5rem;
 	outline: none;
 	border-radius: unset;
-	text-align: initial;
+	text-align: left;
 	&:-webkit-autofill,
 	&:-webkit-autofill:hover,
 	&:-webkit-autofill:focus,

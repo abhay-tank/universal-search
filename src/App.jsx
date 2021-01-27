@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Searchbar from "./components/Searchbar/Searchbar";
 import "./App.scss";
 import jsonData from "./data/sample-data.json";
+import Droplist from "./components/Droplist/Droplist";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import { faCoffee } from "@fortawesome/free-solid-svg-icons";
 class App extends Component {
@@ -30,6 +31,9 @@ class App extends Component {
 					autoFocus={true}
 					placeholder="Search"
 				/>
+				<hr />
+				<h1>Universal Droplist with Searchbar</h1>
+				<Droplist dataList={this.state.data} />
 			</div>
 		);
 	}
