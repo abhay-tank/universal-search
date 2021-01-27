@@ -70,7 +70,7 @@
             
             <nav>
                 
-                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Components</h3><ul><li><a href="Searchbar.html">Searchbar</a></li></ul><h3>Global</h3><ul><li><a href="global.html#handleOnChange">handleOnChange</a></li><li><a href="global.html#handleOnSubmit">handleOnSubmit</a></li><li><a href="global.html#searchContent">searchContent</a></li></ul></div>
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Components</h3><ul><li><a href="Searchbar.html">Searchbar</a></li></ul><h3>Global</h3><ul><li><a href="global.html#handleOnSubmit">handleOnSubmit</a></li><li><a href="global.html#searchContent">searchContent</a></li></ul></div>
                 
             </nav>
         </div>
@@ -90,7 +90,7 @@
 <header>
     
         <h2>
-            &ltSearchbar <i>resultCallback</i> <i>dataList</i> <i>searchKeys</i> <i>resultOnSubmit</i> <i>className</i> <i>placeholder</i> <i>autoFocus</i> <i>caseSensitive</i> <i>alignIcon</i> <i>icon</i> /&gt
+            &ltSearchbar <i>resultCallback</i> <i>dataList</i> <i>searchKeys</i> <i>className</i> <i>placeholder</i> <i>autoFocus</i> <i>caseSensitive</i> <i>alignIcon</i> <i>icon</i> /&gt
         </h2>
         
             <div class="class-description"><p>Renders a <Searchbar /> component</p></div>
@@ -117,7 +117,7 @@
         
         <span class="code-name">
             
-                &ltSearchbar <i>resultCallback</i> <i>dataList</i> <i>searchKeys</i> <i>resultOnSubmit</i> <i>className</i> <i>placeholder</i> <i>autoFocus</i> <i>caseSensitive</i> <i>alignIcon</i> <i>icon</i> /&gt
+                &ltSearchbar <i>resultCallback</i> <i>dataList</i> <i>searchKeys</i> <i>className</i> <i>placeholder</i> <i>autoFocus</i> <i>caseSensitive</i> <i>alignIcon</i> <i>icon</i> /&gt
             
         </span>
     </h4>
@@ -183,17 +183,6 @@
           
     
           <tr class="deep-level-0">
-            <td class="name"><code>resultOnSubmit</code></td>
-            <td>
-              bool
-            </td>
-            <td>No</td>
-            <td>If true result would be genrated onSubmit else onChange</td>
-            <td>false</td>
-          </tr>
-          
-    
-          <tr class="deep-level-0">
             <td class="name"><code>className</code></td>
             <td>
               string
@@ -251,7 +240,7 @@
           <tr class="deep-level-0">
             <td class="name"><code>icon</code></td>
             <td>
-              instanceOf
+              element
             </td>
             <td>No</td>
             <td>Icon displayed along side input field</td>
@@ -305,7 +294,7 @@
         <p class="tag-source">
             <a href="Searchbar.jsx.html" class="button">View Source</a>
             <span>
-                <a href="Searchbar.jsx.html">Searchbar.jsx</a>, <a href="Searchbar.jsx.html#line23">line 23</a>
+                <a href="Searchbar.jsx.html">Searchbar.jsx</a>, <a href="Searchbar.jsx.html#line22">line 22</a>
             </span>
         </p>
     
@@ -340,7 +329,7 @@
 
 <script>
   ReactDOM.render(ReactWrapper({
-    example: "<Searchbar\n\t\tdataList={this.state.data}\n\t\tsearchKeys={[\"name\", \"description\"]}\n\t\tcaseSensitive={false}\n\t\tresultOnSubmit={true}\n\t\tresultCallback={this.fetchResult}\n\t\tclassName=\"searchInput\"\n\t\talignIcon=\"right\"\n\t\tautoFocus={true}\n\t\tplaceholder=\"Search\"\n\t\ticonColor=\"black\"\n\t/>",
+    example: "<Searchbar\n\t\tdataList={this.state.data}\n\t\tsearchKeys={[\"name\", \"description\"]}\n\t\tcaseSensitive={false}\n\t\tresultCallback={this.fetchResult}\n\t\tclassName=\"searchInput\"\n\t\talignIcon=\"right\"\n\t\tautoFocus={true}\n\t\tplaceholder=\"Search\"\n\t\ticonColor=\"black\"\n\t/>",
     uniqId: "component0",
   }), document.getElementById('component0'));
 </script>

@@ -34,7 +34,6 @@ const fetchResult = (result) => {
 	searchKeys={searchKeys}
 	resultCallback={fetchResult}
 	caseSensitive={false}
-	resultOnSubmit={true}
 	className="searchInput"
 	alignIcon="right"
 	autoFocus={true}
@@ -49,7 +48,6 @@ const fetchResult = (result) => {
 - ### _REQUIRED_ **searchKeys** - Array of object Keys on which search would be performed.
 - ### _REQUIRED_ **resultCallback** - Function to handle result upon search completion.
 - ### **caseSensitive** - Should search be caseSesnsitive. Default `false`.
-- ### **resultOnSubmit** - If true result would be generated onSubmit else onChange. Default `false`.
 - ### **className** - SCSS className. Default `""`.
 - ### **alignIcon** - Align search icon to left or right. Default `"right"`.
 

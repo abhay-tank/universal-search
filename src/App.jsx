@@ -24,7 +24,6 @@ class App extends Component {
 					dataList={this.state.data}
 					searchKeys={["name", "description"]}
 					alignIcon="right"
-					resultOnSubmit={false}
 					resultCallback={this.fetchResult}
 					caseSensitive={false}
 					className="searchInput"
