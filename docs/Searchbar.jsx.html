@@ -72,7 +72,7 @@
             
             <nav>
                 
-                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Components</h3><ul><li><a href="Searchbar.html">Searchbar</a></li></ul><h3>Global</h3><ul><li><a href="global.html#handleOnSubmit">handleOnSubmit</a></li><li><a href="global.html#searchContent">searchContent</a></li></ul></div>
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Components</h3><ul><li><a href="Searchbar.html">Searchbar</a></li></ul><h3>Global</h3><ul><li><a href="global.html#handleOnChange">handleOnChange</a></li><li><a href="global.html#handleOnSubmit">handleOnSubmit</a></li><li><a href="global.html#searchContent">searchContent</a></li></ul></div>
                 
             </nav>
         </div>
@@ -172,14 +172,18 @@ class Searchbar extends Component {
 	/**
 	 * @function handleOnSubmit
 	 * @param {Event} event
-	 * @fires searchContent
-	 * Sets searchInputValue inside state and executes searchContent.
+	 * Sets searchInputValue inside state and componentDidMount executes searchContent.
 	 */
 	handleOnSubmit = (event) => {
 		event.preventDefault();
 		this.setState({ searchInputValue: event.target.searchInput.value });
 	};
 
+	/**
+	 * @function handleOnChange
+	 * @param {Event} event
+	 * Sets searchInputValue inside state and componentDidMount executes searchContent.
+	 */
 	handleOnChange = (event) => {
 		this.setState({ searchInputValue: event.target.value });
 	};

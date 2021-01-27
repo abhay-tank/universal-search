@@ -81,14 +81,18 @@ class Searchbar extends Component {
 	/**
 	 * @function handleOnSubmit
 	 * @param {Event} event
-	 * @fires searchContent
-	 * Sets searchInputValue inside state and executes searchContent.
+	 * Sets searchInputValue inside state and componentDidMount executes searchContent.
 	 */
 	handleOnSubmit = (event) => {
 		event.preventDefault();
 		this.setState({ searchInputValue: event.target.searchInput.value });
 	};
 
+	/**
+	 * @function handleOnChange
+	 * @param {Event} event
+	 * Sets searchInputValue inside state and componentDidMount executes searchContent.
+	 */
 	handleOnChange = (event) => {
 		this.setState({ searchInputValue: event.target.value });
 	};
