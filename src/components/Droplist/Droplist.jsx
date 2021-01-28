@@ -12,36 +12,27 @@ export class Droplist extends Component {
 		searchOptions: PropTypes.object,
 	};
 	state = {
-		dataList: [],
+		filteredList: [],
 		selectedOption: "",
 	};
 
-	static getDerivedStateFromProps = (nextProps, prevState) => {
-		if (!prevState.dataList.length) {
-			return {
-				dataList: nextProps.dataList,
-			};
-		} else {
-			return {
-				dataList: prevState.dataList,
-			};
-		}
-	};
-
 	searchResultCallback = (result) => {
-		this.setState({ dataList: [...result] });
+		this.setState({ filteredList: [...result] });
 	};
 
 	resultCallback = (option) => {
-		this.setState((state, props) => {
-			return {
-				selectedOption: option[this.props.displayKey],
-			};
+		this.setState({
+			selectedOption: option[this.props.displayKey],
 		});
 		this.props.selectedOptionCallback(option);
 	};
 
 	render() {
+		// conditional datalist
+		const { dataList, displayKey, searchOptions } = this.props;
+		const optionList = this.state.filteredList.length
+			? this.state.filteredList
+			: dataList;
 		return (
 			<div tabIndex="0" className={styles["droplistSelectDiv"]}>
 				<div className={styles["droplistSelectButton"]}>
@@ -51,21 +42,19 @@ export class Droplist extends Component {
 					<FontAwesomeIcon icon={faAngleDown} />
 				</div>
 				<div className={styles["droplistOptions"]}>
-					{this.props.searchOptions.enableSearch ? (
+					{searchOptions.enableSearch && (
 						<Searchbar
-							dataList={this.state.dataList}
-							searchKeys={this.props.searchOptions.searchKeys}
+							dataList={dataList}
+							searchKeys={searchOptions.searchKeys}
 							resultCallback={this.searchResultCallback}
-							alignIcon={this.props.searchOptions.alignIcon}
-							caseSensitive={this.props.searchOptions.caseSensitive}
+							alignIcon={searchOptions.alignIcon}
+							caseSensitive={searchOptions.caseSensitive}
 							autoFocus={true}
-							placeholder={this.props.searchOptions.placeholder}
+							placeholder={searchOptions.placeholder}
 							autoComplete={false}
 						/>
-					) : (
-						<></>
 					)}
-					{this.state.dataList.map((option, index) => {
+					{optionList.map((option, index) => {
 						return (
 							<button
 								onClick={() => {
@@ -74,7 +63,7 @@ export class Droplist extends Component {
 								className={styles["option"]}
 								key={index}
 							>
-								{option[this.props.displayKey]}
+								{option[displayKey]}
 							</button>
 						);
 					})}

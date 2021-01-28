@@ -42,10 +42,10 @@ class App extends Component {
 					displayKey="name"
 					searchOptions={{
 						enableSearch: true,
-						searchKeys: ["name", "description"],
+						searchKeys: ["name"],
 						caseSensitive: false,
 						placeholder: "Search",
-						alignIcon: "left",
+						alignIcon: "right",
 					}}
 				/>
 			</div>
