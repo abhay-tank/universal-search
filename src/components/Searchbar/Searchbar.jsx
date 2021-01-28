@@ -113,7 +113,10 @@ class Searchbar extends Component {
 				} ${alignIcon}`}
 			>
 				{icon}
-				<form onSubmit={this.handleOnSubmit}>
+				<form
+					autoComplete={autoComplete.toString()}
+					onSubmit={this.handleOnSubmit}
+				>
 					<input
 						id="searchInput"
 						name="searchInput"
@@ -123,7 +126,6 @@ class Searchbar extends Component {
 						type="text"
 						value={this.state.searchInputValue}
 						autoFocus={autoFocus}
-						autoComplete={autoComplete.toString()}
 					/>
 				</form>
 			</div>
@@ -159,7 +161,7 @@ Searchbar.propTypes = {
 	/**
 	 * Input autocomplete
 	 */
-	inputAutoComplete: PropTypes.bool,
+	inputAutoComplete: PropTypes.string,
 	/**
 	 * Should search be caseSesnsitive
 	 */
@@ -180,7 +182,7 @@ Searchbar.defaultProps = {
 	autoFocus: false,
 	caseSensitive: false,
 	alignIcon: "right",
-	autoComplete: false,
+	autoComplete: "off",
 	icon: <FontAwesomeIcon icon={faSearch} />,
 };
 

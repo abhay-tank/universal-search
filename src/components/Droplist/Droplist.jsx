@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import styles from "./Droplist.module.scss";
 import Searchbar from "../Searchbar/Searchbar";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
 export class Droplist extends Component {
 	static propTypes = {
 		dataList: PropTypes.arrayOf(Object),
@@ -40,11 +42,12 @@ export class Droplist extends Component {
 	render() {
 		return (
 			<div tabIndex="0" className={styles["droplistSelectDiv"]}>
-				<button className={styles["droplistSelectButton"]}>
+				<div className={styles["droplistSelectButton"]}>
 					{this.state.selectedOption.length
 						? this.state.selectedOption
 						: "Select"}
-				</button>
+					<FontAwesomeIcon icon={faAngleDown} />
+				</div>
 				<div className={styles["droplistOptions"]}>
 					{this.props.searchOptions.enableSearch ? (
 						<Searchbar

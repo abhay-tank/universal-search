@@ -1,7 +1,13 @@
 .droplistSelectDiv {
 	max-width: 80vw;
+	margin: 1rem;
+	outline: none;
 	.droplistSelectButton {
-		padding: 0.5rem;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: 1rem;
+		border: 2px solid black;
 	}
 
 	.droplistOptions {
@@ -20,19 +26,16 @@
 		.option {
 			display: block;
 			width: 100%;
-			margin: 0.5rem 0;
+			margin: 1rem 0;
+			padding: 0.5rem;
 			text-align: left;
 			font-size: inherit;
 			overflow-wrap: break-word;
 			border: none;
 			&:hover {
-				background-color: indigo;
+				background-color: rgb(2, 2, 2);
 				color: white;
 			}
-			// &:focus,
-			// .droplistOptions {
-			// 	display: none;
-			// }
 		}
 	}
 	&:focus-within > .droplistOptions {
