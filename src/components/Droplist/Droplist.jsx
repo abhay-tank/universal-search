@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import Searchbar from "../Searchbar/Searchbar";
 import PropTypes from "prop-types";
 import styles from "./Droplist.module.scss";
+import Searchbar from "../Searchbar/Searchbar";
 export class Droplist extends Component {
 	static propTypes = {
 		dataList: PropTypes.arrayOf(Object),
@@ -11,25 +11,33 @@ export class Droplist extends Component {
 		dataList: [],
 		selectedOption: "",
 	};
-	componentDidMount = () => {
-		this.setState((state, props) => ({ dataList: this.props.dataList }));
-		console.log("Data mounted");
+
+	static getDerivedStateFromProps = (nextProps, prevState) => {
+		if (!prevState.dataList.length) {
+			return {
+				dataList: nextProps.dataList,
+			};
+		} else {
+			return {
+				dataList: prevState.dataList,
+			};
+		}
 	};
-	getSearchResult = (result) => {
-		if (result.length)
-			this.setState((state, props) => ({ dataList: [...result] }));
-		else this.setState((state, props) => ({ dataList: this.props.dataList }));
+
+	searchResultCallback = (result) => {
+		this.setState({ dataList: [...result] });
 	};
 
 	resultCallback = (option) => {
-		this.setState((state, props) => ({
-			selectedOption: option[this.props.displayKey],
-		}));
+		this.setState((state, props) => {
+			return {
+				selectedOption: option[this.props.displayKey],
+			};
+		});
 		this.props.selectedOptionCallback(option);
 	};
 
 	render() {
-		console.log(this.state);
 		return (
 			<div tabIndex="0" className={styles["droplistSelectDiv"]}>
 				<button className={styles["droplistSelectButton"]}>
@@ -38,20 +46,28 @@ export class Droplist extends Component {
 						: "Select"}
 				</button>
 				<div className={styles["droplistOptions"]}>
-					<Searchbar
-						dataList={this.props.dataList}
-						searchKeys={["name", "description"]}
-						resultCallback={this.getSearchResult}
-					/>
-					{this.state.dataList.map((option) => {
+					{this.props.searchOptions.enableSearch ? (
+						<Searchbar
+							dataList={this.state.dataList}
+							searchKeys={this.props.searchOptions.searchKeys}
+							resultCallback={this.searchResultCallback}
+							alignIcon={this.props.searchOptions.alignIcon}
+							caseSensitive={this.props.searchOptions.caseSensitive}
+							autoFocus={true}
+							placeholder={this.props.searchOptions.placeholder}
+							autoComplete={false}
+						/>
+					) : (
+						<></>
+					)}
+					{this.state.dataList.map((option, index) => {
 						return (
 							<button
 								onClick={() => {
 									this.resultCallback(option);
 								}}
-								id={option.uid}
-								key={option.uid}
 								className={styles["option"]}
+								key={index}
 							>
 								{option[this.props.displayKey]}
 							</button>

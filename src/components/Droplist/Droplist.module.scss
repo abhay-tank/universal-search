@@ -8,7 +8,7 @@
 		background-color: white;
 		box-sizing: border-box;
 		color: black;
-		display: none;
+		visibility: hidden;
 		max-height: 30vh;
 		overflow-y: scroll;
 		border: none;
@@ -29,9 +29,13 @@
 				background-color: indigo;
 				color: white;
 			}
+			// &:focus,
+			// .droplistOptions {
+			// 	display: none;
+			// }
 		}
 	}
 	&:focus-within > .droplistOptions {
-		display: block;
+		visibility: visible;
 	}
 }

@@ -24,8 +24,9 @@ class Searchbar extends Component {
 		searchInputValue: "",
 	};
 
-	componentDidUpdate = () => {
-		this.searchContent();
+	componentDidUpdate = (prevProps, prevState) => {
+		if (prevState.searchInputValue !== this.state.searchInputValue)
+			this.searchContent();
 	};
 	/**
 	 * @function searchContent
@@ -33,10 +34,10 @@ class Searchbar extends Component {
 	 * @fires props.resultCallback
 	 */
 	searchContent = () => {
+		let resultList = [];
 		if (this.state.searchInputValue.trim().length) {
 			const searchKeys = this.props.searchKeys;
 			let result = {};
-			let resultList = [];
 			searchKeys.forEach((searchKey) => {
 				result[`${searchKey}Data`] = [];
 			});
@@ -71,11 +72,11 @@ class Searchbar extends Component {
 			searchKeys.forEach((searchKey) => {
 				resultList.push(...result[`${searchKey}Data`]);
 			});
-			/**
-			 * Execute callback and return result.
-			 */
-			this.props.resultCallback(resultList);
 		}
+		/**
+		 * Execute callback and return result.
+		 */
+		this.props.resultCallback(resultList);
 	};
 
 	/**
@@ -97,7 +98,14 @@ class Searchbar extends Component {
 		this.setState({ searchInputValue: event.target.value });
 	};
 	render() {
-		let { className, alignIcon, icon, placeholder, autoFocus } = this.props;
+		let {
+			className,
+			alignIcon,
+			icon,
+			placeholder,
+			autoFocus,
+			autoComplete,
+		} = this.props;
 		return (
 			<div
 				className={`${styles["inputContainer"]} ${styles[alignIcon]} ${
@@ -115,6 +123,7 @@ class Searchbar extends Component {
 						type="text"
 						value={this.state.searchInputValue}
 						autoFocus={autoFocus}
+						autoComplete={autoComplete.toString()}
 					/>
 				</form>
 			</div>
@@ -148,6 +157,10 @@ Searchbar.propTypes = {
 	 */
 	autoFocus: PropTypes.bool,
 	/**
+	 * Input autocomplete
+	 */
+	inputAutoComplete: PropTypes.bool,
+	/**
 	 * Should search be caseSesnsitive
 	 */
 	caseSensitive: PropTypes.bool,
@@ -167,6 +180,7 @@ Searchbar.defaultProps = {
 	autoFocus: false,
 	caseSensitive: false,
 	alignIcon: "right",
+	autoComplete: false,
 	icon: <FontAwesomeIcon icon={faSearch} />,
 };
 

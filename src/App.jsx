@@ -40,6 +40,13 @@ class App extends Component {
 					selectedOptionCallback={this.selectedOption}
 					dataList={this.state.data}
 					displayKey="name"
+					searchOptions={{
+						enableSearch: true,
+						searchKeys: ["name", "description"],
+						caseSensitive: false,
+						placeholder: "Search",
+						alignIcon: "left",
+					}}
 				/>
 			</div>
 		);
