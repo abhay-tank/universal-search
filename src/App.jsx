@@ -17,6 +17,9 @@ class App extends Component {
 	fetchResult = (result) => {
 		console.log(result);
 	};
+	selectedOption = (result) => {
+		console.log("Dropdown selected option: ", result);
+	};
 	render() {
 		return (
 			<div className="AppContainer">
@@ -33,7 +36,11 @@ class App extends Component {
 				/>
 				<hr />
 				<h1>Universal Droplist with Searchbar</h1>
-				<Droplist dataList={this.state.data} />
+				<Droplist
+					selectedOptionCallback={this.selectedOption}
+					dataList={this.state.data}
+					displayKey="name"
+				/>
 			</div>
 		);
 	}

@@ -1,16 +1,35 @@
 .droplistSelectDiv {
+	max-width: 80vw;
 	.droplistSelectButton {
-		width: 100%;
+		padding: 0.5rem;
 	}
 
 	.droplistOptions {
-		padding: 1rem;
 		background-color: white;
+		box-sizing: border-box;
 		color: black;
 		display: none;
 		max-height: 30vh;
 		overflow-y: scroll;
+		border: none;
+		font-size: inherit;
+		padding: 0.5rem;
+		outline: none;
+		border-radius: unset;
 		text-align: left;
+		.option {
+			display: block;
+			width: 100%;
+			margin: 0.5rem 0;
+			text-align: left;
+			font-size: inherit;
+			overflow-wrap: break-word;
+			border: none;
+			&:hover {
+				background-color: indigo;
+				color: white;
+			}
+		}
 	}
 	&:focus-within > .droplistOptions {
 		display: block;
