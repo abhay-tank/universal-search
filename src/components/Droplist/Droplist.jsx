@@ -6,8 +6,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
 export class Droplist extends Component {
 	static propTypes = {
-		dataList: PropTypes.arrayOf(Object),
-		selectedOptionCallback: PropTypes.func,
+		dataList: PropTypes.arrayOf(Object).isRequired,
+		selectedOptionCallback: PropTypes.func.isRequired,
+		displayKey: PropTypes.string.isRequired,
+		searchOptions: PropTypes.object,
 	};
 	state = {
 		dataList: [],
