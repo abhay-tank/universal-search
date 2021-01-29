@@ -56,11 +56,13 @@ export class Droplist extends Component {
 		this.setState({ showOptions: !this.state.showOptions });
 	};
 
-	resultCallback = (option) => {
+	resultCallback = (key, value) => {
 		this.setState({
-			selectedOption: option[this.props.displayKey],
+			selectedOption: key,
 		});
-		this.props.selectedOptionCallback(option);
+		let result = {};
+		result[key] = value;
+		this.props.selectedOptionCallback(result);
 		this.toggleDiv();
 	};
 
@@ -119,7 +121,7 @@ export class Droplist extends Component {
 						return (
 							<button
 								onClick={() => {
-									this.resultCallback(option);
+									this.resultCallback(option[displayKey], option);
 								}}
 								className={styles["option"]}
 								key={index}

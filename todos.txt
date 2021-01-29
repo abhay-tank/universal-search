@@ -4,4 +4,4 @@ Droplist =>
 ✅on option list drop, clear search input and change arrow icon.
 ✅Add prop for default selected value.
 ✅destructure props & state.
-return key and value.
+✅return key and value.
