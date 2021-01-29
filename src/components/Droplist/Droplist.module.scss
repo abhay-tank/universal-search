@@ -14,7 +14,6 @@
 		background-color: white;
 		box-sizing: border-box;
 		color: black;
-		visibility: hidden;
 		max-height: 30vh;
 		overflow-y: scroll;
 		border: none;
@@ -38,7 +37,12 @@
 			}
 		}
 	}
-	&:focus-within > .droplistOptions {
-		visibility: visible;
-	}
+}
+
+.iconButton {
+	cursor: pointer;
+}
+
+.hidden {
+	visibility: hidden;
 }

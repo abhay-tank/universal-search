@@ -40,6 +40,7 @@ class App extends Component {
 					selectedOptionCallback={this.selectedOption}
 					dataList={this.state.data}
 					displayKey="name"
+					placeHolder="Select Something"
 					searchOptions={{
 						enableSearch: true,
 						searchKeys: ["name"],

@@ -3,21 +3,48 @@ import PropTypes from "prop-types";
 import styles from "./Droplist.module.scss";
 import Searchbar from "../Searchbar/Searchbar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
+import {
+	faAngleDown,
+	faAngleUp,
+	faTimes,
+} from "@fortawesome/free-solid-svg-icons";
 export class Droplist extends Component {
+	constructor(props) {
+		super(props);
+		this.optionDivRef = React.createRef();
+	}
 	static propTypes = {
 		dataList: PropTypes.arrayOf(Object).isRequired,
 		selectedOptionCallback: PropTypes.func.isRequired,
 		displayKey: PropTypes.string.isRequired,
 		searchOptions: PropTypes.object,
+		placeHolder: PropTypes.string,
 	};
+
 	state = {
 		filteredList: [],
 		selectedOption: "",
+		showOptions: false,
+	};
+
+	componentDidUpdate = () => {
+		if (this.state.showOptions) {
+			this.optionDivRef.current.classList.remove(styles["hidden"]);
+		} else {
+			this.optionDivRef.current.classList.add(styles["hidden"]);
+		}
 	};
 
 	searchResultCallback = (result) => {
 		this.setState({ filteredList: [...result] });
+	};
+
+	removeSelectedOption = () => {
+		this.setState({ selectedOption: "" });
+	};
+
+	toggleDiv = () => {
+		this.setState({ showOptions: !this.state.showOptions });
 	};
 
 	resultCallback = (option) => {
@@ -25,23 +52,43 @@ export class Droplist extends Component {
 			selectedOption: option[this.props.displayKey],
 		});
 		this.props.selectedOptionCallback(option);
+		this.toggleDiv();
 	};
 
 	render() {
 		// conditional datalist
-		const { dataList, displayKey, searchOptions } = this.props;
-		const optionList = this.state.filteredList.length
-			? this.state.filteredList
-			: dataList;
+		const { selectedOption, showOptions, filteredList } = this.state;
+		const { dataList, displayKey, searchOptions, placeHolder } = this.props;
+		const optionList = filteredList.length ? filteredList : dataList;
 		return (
 			<div tabIndex="0" className={styles["droplistSelectDiv"]}>
 				<div className={styles["droplistSelectButton"]}>
-					{this.state.selectedOption.length
-						? this.state.selectedOption
-						: "Select"}
-					<FontAwesomeIcon icon={faAngleDown} />
+					{selectedOption.length ? (
+						<>
+							{" "}
+							{selectedOption}
+							<FontAwesomeIcon
+								icon={faTimes}
+								className={styles["iconButton"]}
+								onClick={this.removeSelectedOption}
+							/>
+						</>
+					) : (
+						<>
+							{" "}
+							{placeHolder}
+							<FontAwesomeIcon
+								onClick={this.toggleDiv}
+								className={styles["iconButton"]}
+								icon={showOptions ? faAngleUp : faAngleDown}
+							/>
+						</>
+					)}
 				</div>
-				<div className={styles["droplistOptions"]}>
+				<div
+					ref={this.optionDivRef}
+					className={`${styles["droplistOptions"]} ${styles["hidden"]}`}
+				>
 					{searchOptions.enableSearch && (
 						<Searchbar
 							dataList={dataList}
