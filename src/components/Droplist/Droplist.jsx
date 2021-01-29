@@ -43,6 +43,20 @@ export class Droplist extends Component {
 		this.setState({ selectedOption: "" });
 	};
 
+	hideOptions = (event) => {
+		console.log(event.currentTarget.id, ",", event.target.id);
+		if (
+			event.currentTarget.id === event.target.id &&
+			!event.currentTarget.contains(event.relatedTarget)
+		) {
+			this.toggleDiv();
+		}
+		// if (!event.currentTarget.contains(event.relatedTarget)) {
+		// 	// Not triggered when swapping focus between children
+		// 	return;
+		// }
+	};
+
 	toggleDiv = () => {
 		this.setState({ showOptions: !this.state.showOptions });
 	};
@@ -61,7 +75,12 @@ export class Droplist extends Component {
 		const { dataList, displayKey, searchOptions, placeHolder } = this.props;
 		const optionList = filteredList.length ? filteredList : dataList;
 		return (
-			<div tabIndex="0" className={styles["droplistSelectDiv"]}>
+			<div
+				tabIndex="0"
+				id="dropListSelect"
+				onBlur={this.hideOptions}
+				className={styles["droplistSelectDiv"]}
+			>
 				<div className={styles["droplistSelectButton"]}>
 					{selectedOption.length ? (
 						<>
@@ -109,6 +128,7 @@ export class Droplist extends Component {
 								}}
 								className={styles["option"]}
 								key={index}
+								id={option[displayKey]}
 							>
 								{option[displayKey]}
 							</button>
