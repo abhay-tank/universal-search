@@ -44,17 +44,12 @@ export class Droplist extends Component {
 	};
 
 	hideOptions = (event) => {
-		console.log(event.currentTarget.id, ",", event.target.id);
 		if (
 			event.currentTarget.id === event.target.id &&
 			!event.currentTarget.contains(event.relatedTarget)
 		) {
 			this.toggleDiv();
 		}
-		// if (!event.currentTarget.contains(event.relatedTarget)) {
-		// 	// Not triggered when swapping focus between children
-		// 	return;
-		// }
 	};
 
 	toggleDiv = () => {
