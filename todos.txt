@@ -5,3 +5,5 @@ Droplist =>
 ✅Add prop for default selected value.
 ✅destructure props & state.
 return key and value.
+(Multiple select) Remove item from selectedList.
+(Single item select) fix remove icon
