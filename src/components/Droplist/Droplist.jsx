@@ -107,7 +107,10 @@ class Droplist extends Component {
 	 * @param {Object} option
 	 */
 	isSelected = (option) => {
-		return this.state.selectedOptions.includes(option) ? true : false;
+		const { displayKey } = this.props;
+		return this.state.selectedOptions.some(
+			(selectedOption) => selectedOption[displayKey] === option[displayKey]
+		);
 	};
 
 	/**
