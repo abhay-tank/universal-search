@@ -7,7 +7,10 @@ import {
 	faAngleDown,
 	faAngleUp,
 	faTimes,
+	faCheckSquare as faCheckSquareSolid,
+	faTimesCircle,
 } from "@fortawesome/free-solid-svg-icons";
+import { faCheckSquare as faCheckSquareRegular } from "@fortawesome/free-regular-svg-icons";
 export class Droplist extends Component {
 	constructor(props) {
 		super(props);
@@ -25,6 +28,7 @@ export class Droplist extends Component {
 		filteredList: [],
 		selectedOption: "",
 		showOptions: false,
+		selectedOptions: [],
 	};
 
 	componentDidUpdate = () => {
@@ -40,7 +44,11 @@ export class Droplist extends Component {
 	};
 
 	removeSelectedOption = () => {
-		this.setState({ selectedOption: "" });
+		if (this.props.multipleSelect) {
+			this.setState({ selectedOptions: [] });
+		} else {
+			this.setState({ selectedOption: "" });
+		}
 	};
 
 	hideOptions = (event) => {
@@ -56,6 +64,7 @@ export class Droplist extends Component {
 		this.setState({ showOptions: !this.state.showOptions });
 	};
 
+<<<<<<< HEAD
 	resultCallback = (key, value) => {
 		this.setState({
 			selectedOption: key,
@@ -63,13 +72,61 @@ export class Droplist extends Component {
 		let result = {};
 		result[key] = value;
 		this.props.selectedOptionCallback(result);
+=======
+	addToSelectedOptions = (option) => {
+		const { selectedOptionCallback } = this.props;
+		const { selectedOptions } = this.state;
+		this.setState({
+			selectedOptions: [...this.state.selectedOptions, option],
+		});
+		selectedOptionCallback(selectedOptions);
+	};
+
+	removeFromSelectedOptions = (option) => {
+		const { selectedOptionCallback } = this.props;
+		const { selectedOptions } = this.state;
+		this.setState({
+			selectedOptions: selectedOptions.filter(
+				(selectedOption) => selectedOption !== option
+			),
+		});
+		selectedOptionCallback(selectedOptions);
+	};
+
+	resultCallback = (option) => {
+		const { selectedOptionCallback } = this.props;
+		this.setState({
+			selectedOption: option,
+		});
+		selectedOptionCallback(option);
+>>>>>>> 2f03622d6155aa970af3b3391cc3c50656a0d602
 		this.toggleDiv();
 	};
 
+	isSelected = (option) => {
+		return this.state.selectedOptions.includes(option) ? true : false;
+	};
+
 	render() {
-		// conditional datalist
-		const { selectedOption, showOptions, filteredList } = this.state;
-		const { dataList, displayKey, searchOptions, placeHolder } = this.props;
+		const {
+			selectedOption,
+			selectedOptions,
+			showOptions,
+			filteredList,
+		} = this.state;
+		const {
+			dataList,
+			displayKey,
+			searchOptions,
+			placeHolder,
+			multipleSelect,
+		} = this.props;
+		const selectOption = multipleSelect
+			? this.addToSelectedOptions
+			: this.resultCallback;
+		const selectedOptionList = multipleSelect
+			? selectedOptions
+			: selectedOption;
 		const optionList = filteredList.length ? filteredList : dataList;
 		return (
 			<div
@@ -78,28 +135,44 @@ export class Droplist extends Component {
 				onBlur={this.hideOptions}
 				className={styles["droplistSelectDiv"]}
 			>
-				<div className={styles["droplistSelectButton"]}>
-					{selectedOption.length ? (
-						<>
-							{" "}
-							{selectedOption}
-							<FontAwesomeIcon
-								icon={faTimes}
-								className={styles["iconButton"]}
-								onClick={this.removeSelectedOption}
-							/>
-						</>
+				<div className={styles["droplistSelect"]}>
+					{(selectedOptionList.length && Array.isArray(selectedOptionList)) ||
+					selectedOptionList[displayKey]?.length ? (
+						<div className={styles["selectedKeys"]}>
+							{Array.isArray(selectedOptionList) ? (
+								selectedOptionList.map((selectedOption, index) => {
+									return (
+										<div className={styles["multiSelectOption"]} key={index}>
+											{selectedOption[displayKey].length > 10
+												? selectedOption[displayKey].substring(0, 10) + "..."
+												: selectedOption[displayKey]}
+											<FontAwesomeIcon icon={faTimesCircle} />
+										</div>
+									);
+								})
+							) : (
+								<div>{selectedOptionList[displayKey]}</div>
+							)}
+						</div>
 					) : (
-						<>
-							{" "}
-							{placeHolder}
-							<FontAwesomeIcon
-								onClick={this.toggleDiv}
-								className={styles["iconButton"]}
-								icon={showOptions ? faAngleUp : faAngleDown}
-							/>
-						</>
+						<>{placeHolder}</>
 					)}
+					<div className={styles["icons"]}>
+						{(selectedOptionList.length && Array.isArray(selectedOptionList)) ||
+						selectedOptionList[displayKey]?.length ? (
+							<FontAwesomeIcon
+								onClick={this.removeSelectedOption}
+								icon={faTimes}
+							/>
+						) : (
+							<></>
+						)}
+						<FontAwesomeIcon
+							onClick={this.toggleDiv}
+							className={styles["iconButton"]}
+							icon={showOptions ? faAngleUp : faAngleDown}
+						/>
+					</div>
 				</div>
 				<div
 					ref={this.optionDivRef}
@@ -119,16 +192,32 @@ export class Droplist extends Component {
 					)}
 					{optionList.map((option, index) => {
 						return (
-							<button
+							<div
+								className={`${styles["option"]} ${
+									this.isSelected(option) ? styles["isSelected"] : ""
+								}`}
 								onClick={() => {
+<<<<<<< HEAD
 									this.resultCallback(option[displayKey], option);
+=======
+									selectOption(option);
+>>>>>>> 2f03622d6155aa970af3b3391cc3c50656a0d602
 								}}
-								className={styles["option"]}
 								key={index}
-								id={option[displayKey]}
 							>
-								{option[displayKey]}
-							</button>
+								{multipleSelect ? (
+									<FontAwesomeIcon
+										icon={
+											this.isSelected(option)
+												? faCheckSquareSolid
+												: faCheckSquareRegular
+										}
+									/>
+								) : (
+									<></>
+								)}
+								<button id={option[displayKey]}>{option[displayKey]}</button>
+							</div>
 						);
 					})}
 				</div>
