@@ -8,22 +8,28 @@
 		justify-content: space-between;
 		padding: 1rem;
 		border: 2px solid black;
+
 		.icons {
+			display: flex;
+			flex-wrap: nowrap;
+			justify-content: center;
+			align-items: center;
 			* {
-				margin: 0.5rem;
+				margin: 0 0.5rem;
 			}
 		}
 		.selectedKeys {
 			display: flex;
 			align-items: center;
 			justify-content: flex-start;
+			box-sizing: border-box;
 			flex-wrap: wrap;
 			.multiSelectOption {
 				cursor: pointer;
 				display: flex;
 				justify-content: space-between;
 				align-items: center;
-				padding: 5px;
+				padding: 0 5px;
 				background-color: white;
 				color: black;
 				border: 2px solid black;
@@ -33,7 +39,6 @@
 
 	.droplistOptions {
 		background-color: white;
-		box-sizing: border-box;
 		color: black;
 		max-height: 30vh;
 		overflow-y: scroll;
@@ -46,20 +51,31 @@
 		.option {
 			display: flex;
 			align-items: center;
-			justify-content: flex-start;
-			margin: 1rem 0;
-			padding: 0.5rem;
-
+			justify-content: left;
+			box-sizing: border-box;
+			max-width: 90%;
+			width: 90%;
+			margin: 1rem 5%;
 			&:hover {
 				background-color: rgb(2, 2, 2);
 				color: white;
 			}
+			* {
+				margin: 0 0.5rem;
+			}
 			button {
-				margin: 0 1rem;
+				box-sizing: border-box;
+				background-color: inherit;
+				color: inherit;
 				font-size: inherit;
 				padding: 0.5rem;
+				max-width: inherit;
 				border: none;
+				text-align: left;
 				overflow-wrap: break-word;
+				&:focus {
+					outline: none;
+				}
 			}
 		}
 	}
@@ -67,7 +83,7 @@
 
 .removeSelectedIcon {
 	&:hover {
-		color: red;
+		color: rgb(184, 0, 0);
 	}
 }
 

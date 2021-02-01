@@ -74,14 +74,23 @@ class Droplist extends Component {
 	};
 
 	/**
-	 * @function addToSelectedOptions
+	 * @function addSelectedOption
 	 * If multipleSelect is true, then selected option is added to selectedOptions Array.
 	 * @param {Object} option
 	 */
-	addToSelectedOptions = (option) => {
-		this.setState({
-			selectedOptions: [...this.state.selectedOptions, option],
-		});
+	addSelectedOption = (option) => {
+		if (this.props.multipleSelect) {
+			this.setState({
+				selectedOptions: [...this.state.selectedOptions, option],
+			});
+		} else {
+			const { selectedOptionCallback } = this.props;
+			this.setState({
+				selectedOption: option,
+			});
+			selectedOptionCallback(option);
+			this.toggleDiv();
+		}
 	};
 
 	/**
@@ -98,20 +107,6 @@ class Droplist extends Component {
 			),
 		});
 		selectedOptionCallback(selectedOptions);
-	};
-
-	/**
-	 * @function resultCallback
-	 * Return selectedOption.
-	 * @param {Object} option
-	 */
-	resultCallback = (option) => {
-		const { selectedOptionCallback } = this.props;
-		this.setState({
-			selectedOption: option,
-		});
-		selectedOptionCallback(option);
-		this.toggleDiv();
 	};
 
 	// UTIL functions
@@ -165,9 +160,6 @@ class Droplist extends Component {
 			placeHolder,
 			multipleSelect,
 		} = this.props;
-		const selectOption = multipleSelect
-			? this.addToSelectedOptions
-			: this.resultCallback;
 		const selectedOptionList = multipleSelect
 			? selectedOptions
 			: selectedOption;
@@ -252,7 +244,7 @@ class Droplist extends Component {
 									this.isSelected(option) ? styles["isSelected"] : ""
 								}`}
 								onClick={() => {
-									selectOption(option);
+									this.addSelectedOption(option);
 								}}
 								key={index}
 							>

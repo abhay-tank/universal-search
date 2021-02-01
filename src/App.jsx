@@ -41,7 +41,7 @@ class App extends Component {
 					dataList={this.state.data}
 					displayKey="name"
 					placeHolder="Select Something"
-					multipleSelect={false}
+					multipleSelect={true}
 					searchOptions={{
 						enableSearch: true,
 						searchKeys: ["name"],
