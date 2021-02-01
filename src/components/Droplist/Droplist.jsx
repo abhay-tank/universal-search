@@ -194,9 +194,7 @@ class Droplist extends Component {
 						<FontAwesomeIcon
 							onClick={this.toggleDiv}
 							className={styles["iconButton"]}
-							icon={
-								selectedOptions.length && showOptions ? faAngleUp : faAngleDown
-							}
+							icon={showOptions ? faAngleUp : faAngleDown}
 						/>
 					</div>
 				</div>
