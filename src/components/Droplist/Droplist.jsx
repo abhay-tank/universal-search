@@ -20,8 +20,15 @@ export class Droplist extends Component {
 		dataList: PropTypes.arrayOf(Object).isRequired,
 		selectedOptionCallback: PropTypes.func.isRequired,
 		displayKey: PropTypes.string.isRequired,
+		multipleSelect: PropTypes.bool,
 		searchOptions: PropTypes.object,
 		placeHolder: PropTypes.string,
+	};
+
+	static defaultProps = {
+		placeHolder: "Select",
+		multipleSelect: false,
+		searchOptions: { enableSearch: false },
 	};
 
 	state = {
@@ -39,10 +46,19 @@ export class Droplist extends Component {
 		}
 	};
 
+	/**
+	 * @function
+	 * Retrieve filtered array of objects after performing search in dataList.
+	 * @param {Array} result
+	 */
 	searchResultCallback = (result) => {
 		this.setState({ filteredList: [...result] });
 	};
 
+	/**
+	 * @function
+	 * Clear selectedOption or all selectedOptions.
+	 */
 	removeSelectedOption = () => {
 		if (this.props.multipleSelect) {
 			this.setState({ selectedOptions: [] });
@@ -51,28 +67,11 @@ export class Droplist extends Component {
 		}
 	};
 
-	hideOptions = (event) => {
-		if (
-			event.currentTarget.id === event.target.id &&
-			!event.currentTarget.contains(event.relatedTarget)
-		) {
-			this.toggleDiv();
-		}
-	};
-
-	toggleDiv = () => {
-		this.setState({ showOptions: !this.state.showOptions });
-	};
-
-	// resultCallback = (key, value) => {
-	// 	this.setState({
-	// 		selectedOption: key,
-	// 	});
-	// 	let result = {};
-	// 	result[key] = value;
-	// 	this.props.selectedOptionCallback(result);
-	// }
-
+	/**
+	 * @function
+	 * If multipleSelect is true, then selected option is added to selectedOptions Array.
+	 * @param {Object} option
+	 */
 	addToSelectedOptions = (option) => {
 		const { selectedOptionCallback } = this.props;
 		const { selectedOptions } = this.state;
@@ -82,6 +81,11 @@ export class Droplist extends Component {
 		selectedOptionCallback(selectedOptions);
 	};
 
+	/**
+	 * @function
+	 * If multipleSelect is true, then selected option will be removed from selectedOptions Array.
+	 * @param {Object} option
+	 */
 	removeFromSelectedOptions = (option) => {
 		const { selectedOptionCallback, displayKey } = this.props;
 		const { selectedOptions } = this.state;
@@ -93,6 +97,11 @@ export class Droplist extends Component {
 		selectedOptionCallback(selectedOptions);
 	};
 
+	/**
+	 * @function
+	 * Return selectedOption.
+	 * @param {Object} option
+	 */
 	resultCallback = (option) => {
 		const { selectedOptionCallback } = this.props;
 		this.setState({
@@ -102,8 +111,34 @@ export class Droplist extends Component {
 		this.toggleDiv();
 	};
 
+	// UTIL functions
+	/**
+	 * @function
+	 * Check if option is in selectedOptions. If yes return true else false.
+	 * @param {Object} option
+	 */
 	isSelected = (option) => {
 		return this.state.selectedOptions.includes(option) ? true : false;
+	};
+
+	/**
+	 * Toggle optionsDiv
+	 * @param {Event} event
+	 */
+	hideOptions = (event) => {
+		if (
+			event.currentTarget.id === event.target.id &&
+			!event.currentTarget.contains(event.relatedTarget)
+		) {
+			this.toggleDiv();
+		}
+	};
+
+	/**
+	 * Show / Hide optionsDiv
+	 */
+	toggleDiv = () => {
+		this.setState({ showOptions: !this.state.showOptions });
 	};
 
 	render() {
