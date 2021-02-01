@@ -39,7 +39,6 @@ class Droplist extends Component {
 
 	state = {
 		filteredList: [],
-		selectedOption: "",
 		showOptions: false,
 		selectedOptions: [],
 	};
@@ -66,11 +65,7 @@ class Droplist extends Component {
 	 * Clear selectedOption or all selectedOptions.
 	 */
 	removeSelectedOption = () => {
-		if (this.props.multipleSelect) {
-			this.setState({ selectedOptions: [] });
-		} else {
-			this.setState({ selectedOption: "" });
-		}
+		this.setState({ selectedOptions: [] });
 	};
 
 	/**
@@ -79,15 +74,11 @@ class Droplist extends Component {
 	 * @param {Object} option
 	 */
 	addSelectedOption = (option) => {
-		if (this.props.multipleSelect) {
-			this.setState({
-				selectedOptions: [...this.state.selectedOptions, option],
-			});
-		} else {
+		this.setState({
+			selectedOptions: [...this.state.selectedOptions, option],
+		});
+		if (!this.props.multipleSelect) {
 			const { selectedOptionCallback } = this.props;
-			this.setState({
-				selectedOption: option,
-			});
 			selectedOptionCallback(option);
 			this.toggleDiv();
 		}
@@ -147,12 +138,7 @@ class Droplist extends Component {
 	};
 
 	render() {
-		const {
-			selectedOption,
-			selectedOptions,
-			showOptions,
-			filteredList,
-		} = this.state;
+		const { selectedOptions, showOptions, filteredList } = this.state;
 		const {
 			dataList,
 			displayKey,
@@ -160,9 +146,6 @@ class Droplist extends Component {
 			placeHolder,
 			multipleSelect,
 		} = this.props;
-		const selectedOptionList = multipleSelect
-			? selectedOptions
-			: selectedOption;
 		const optionList = filteredList.length ? filteredList : dataList;
 		return (
 			<div
@@ -172,11 +155,10 @@ class Droplist extends Component {
 				className={styles["droplistSelectDiv"]}
 			>
 				<div className={styles["droplistSelect"]}>
-					{(selectedOptionList.length && Array.isArray(selectedOptionList)) ||
-					selectedOptionList[displayKey]?.length ? (
+					{selectedOptions.length ? (
 						<div className={styles["selectedKeys"]}>
-							{Array.isArray(selectedOptionList) ? (
-								selectedOptionList.map((selectedOption, index) => {
+							{multipleSelect ? (
+								selectedOptions.map((selectedOption, index) => {
 									return (
 										<div className={styles["multiSelectOption"]} key={index}>
 											{selectedOption[displayKey].length > 10
@@ -193,15 +175,14 @@ class Droplist extends Component {
 									);
 								})
 							) : (
-								<div>{selectedOptionList[displayKey]}</div>
+								<div>{selectedOptions[0][displayKey]}</div>
 							)}
 						</div>
 					) : (
 						<>{placeHolder}</>
 					)}
 					<div className={styles["icons"]}>
-						{(selectedOptionList.length && Array.isArray(selectedOptionList)) ||
-						selectedOptionList[displayKey]?.length ? (
+						{selectedOptions.length ? (
 							<FontAwesomeIcon
 								className={styles["removeSelectedIcon"]}
 								onClick={this.removeSelectedOption}
@@ -214,9 +195,7 @@ class Droplist extends Component {
 							onClick={this.toggleDiv}
 							className={styles["iconButton"]}
 							icon={
-								selectedOptionList[displayKey]?.length && showOptions
-									? faAngleUp
-									: faAngleDown
+								selectedOptions.length && showOptions ? faAngleUp : faAngleDown
 							}
 						/>
 					</div>
