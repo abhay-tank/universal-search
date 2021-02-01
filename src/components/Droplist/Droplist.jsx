@@ -64,15 +64,15 @@ export class Droplist extends Component {
 		this.setState({ showOptions: !this.state.showOptions });
 	};
 
-<<<<<<< HEAD
-	resultCallback = (key, value) => {
-		this.setState({
-			selectedOption: key,
-		});
-		let result = {};
-		result[key] = value;
-		this.props.selectedOptionCallback(result);
-=======
+	// resultCallback = (key, value) => {
+	// 	this.setState({
+	// 		selectedOption: key,
+	// 	});
+	// 	let result = {};
+	// 	result[key] = value;
+	// 	this.props.selectedOptionCallback(result);
+	// }
+
 	addToSelectedOptions = (option) => {
 		const { selectedOptionCallback } = this.props;
 		const { selectedOptions } = this.state;
@@ -83,11 +83,11 @@ export class Droplist extends Component {
 	};
 
 	removeFromSelectedOptions = (option) => {
-		const { selectedOptionCallback } = this.props;
+		const { selectedOptionCallback, displayKey } = this.props;
 		const { selectedOptions } = this.state;
 		this.setState({
 			selectedOptions: selectedOptions.filter(
-				(selectedOption) => selectedOption !== option
+				(selectedOption) => selectedOption[displayKey] !== option[displayKey]
 			),
 		});
 		selectedOptionCallback(selectedOptions);
@@ -99,7 +99,6 @@ export class Droplist extends Component {
 			selectedOption: option,
 		});
 		selectedOptionCallback(option);
->>>>>>> 2f03622d6155aa970af3b3391cc3c50656a0d602
 		this.toggleDiv();
 	};
 
@@ -146,7 +145,13 @@ export class Droplist extends Component {
 											{selectedOption[displayKey].length > 10
 												? selectedOption[displayKey].substring(0, 10) + "..."
 												: selectedOption[displayKey]}
-											<FontAwesomeIcon icon={faTimesCircle} />
+											<FontAwesomeIcon
+												onClick={() => {
+													this.removeFromSelectedOptions(selectedOption);
+												}}
+												className={styles["removeSelectedIcon"]}
+												icon={faTimesCircle}
+											/>
 										</div>
 									);
 								})
@@ -161,6 +166,7 @@ export class Droplist extends Component {
 						{(selectedOptionList.length && Array.isArray(selectedOptionList)) ||
 						selectedOptionList[displayKey]?.length ? (
 							<FontAwesomeIcon
+								className={styles["removeSelectedIcon"]}
 								onClick={this.removeSelectedOption}
 								icon={faTimes}
 							/>
@@ -170,7 +176,11 @@ export class Droplist extends Component {
 						<FontAwesomeIcon
 							onClick={this.toggleDiv}
 							className={styles["iconButton"]}
-							icon={showOptions ? faAngleUp : faAngleDown}
+							icon={
+								selectedOptionList[displayKey]?.length && showOptions
+									? faAngleUp
+									: faAngleDown
+							}
 						/>
 					</div>
 				</div>
@@ -197,11 +207,7 @@ export class Droplist extends Component {
 									this.isSelected(option) ? styles["isSelected"] : ""
 								}`}
 								onClick={() => {
-<<<<<<< HEAD
-									this.resultCallback(option[displayKey], option);
-=======
 									selectOption(option);
->>>>>>> 2f03622d6155aa970af3b3391cc3c50656a0d602
 								}}
 								key={index}
 							>

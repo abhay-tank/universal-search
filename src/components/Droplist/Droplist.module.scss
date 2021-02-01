@@ -65,6 +65,12 @@
 	}
 }
 
+.removeSelectedIcon {
+	&:hover {
+		color: red;
+	}
+}
+
 .iconButton {
 	cursor: pointer;
 }
