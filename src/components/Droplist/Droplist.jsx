@@ -16,20 +16,6 @@ export class Droplist extends Component {
 		super(props);
 		this.optionDivRef = React.createRef();
 	}
-	static propTypes = {
-		dataList: PropTypes.arrayOf(Object).isRequired,
-		selectedOptionCallback: PropTypes.func.isRequired,
-		displayKey: PropTypes.string.isRequired,
-		multipleSelect: PropTypes.bool,
-		searchOptions: PropTypes.object,
-		placeHolder: PropTypes.string,
-	};
-
-	static defaultProps = {
-		placeHolder: "Select",
-		multipleSelect: false,
-		searchOptions: { enableSearch: false },
-	};
 
 	state = {
 		filteredList: [],
@@ -73,12 +59,9 @@ export class Droplist extends Component {
 	 * @param {Object} option
 	 */
 	addToSelectedOptions = (option) => {
-		const { selectedOptionCallback } = this.props;
-		const { selectedOptions } = this.state;
 		this.setState({
 			selectedOptions: [...this.state.selectedOptions, option],
 		});
-		selectedOptionCallback(selectedOptions);
 	};
 
 	/**
@@ -126,11 +109,16 @@ export class Droplist extends Component {
 	 * @param {Event} event
 	 */
 	hideOptions = (event) => {
+		const { selectedOptionCallback, multipleSelect } = this.props;
+		const { selectedOptions } = this.state;
 		if (
 			event.currentTarget.id === event.target.id &&
 			!event.currentTarget.contains(event.relatedTarget)
 		) {
 			this.toggleDiv();
+			if (multipleSelect) {
+				selectedOptionCallback(selectedOptions);
+			}
 		}
 	};
 
@@ -266,5 +254,38 @@ export class Droplist extends Component {
 		);
 	}
 }
+
+Droplist.propTypes = {
+	/**
+	 * Array of objects which should be rendered.
+	 */
+	dataList: PropTypes.arrayOf(Object).isRequired,
+	/**
+	 * Callback when selectedOption/selectedOptions are toggled.
+	 */
+	selectedOptionCallback: PropTypes.func.isRequired,
+	/**
+	 * Object key which should be displayed as option.
+	 */
+	displayKey: PropTypes.string.isRequired,
+	/**
+	 * Allow multiple select.
+	 */
+	multipleSelect: PropTypes.bool,
+	/**
+	 * Integrate search among options.
+	 */
+	searchOptions: PropTypes.object,
+	/**
+	 * Placeholder when no options are selected.
+	 */
+	placeHolder: PropTypes.string,
+};
+
+Droplist.defaultProps = {
+	placeHolder: "Select",
+	multipleSelect: false,
+	searchOptions: { enableSearch: false },
+};
 
 export default Droplist;
