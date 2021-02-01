@@ -11,7 +11,27 @@ import {
 	faTimesCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import { faCheckSquare as faCheckSquareRegular } from "@fortawesome/free-regular-svg-icons";
-export class Droplist extends Component {
+
+/**
+ * Renders a <Droplist /> component
+ * @component
+ * @example
+ * 	<Droplist
+ * 		selectedOptionCallback={this.selectedOption}
+ * 		dataList={this.state.data}
+ * 		displayKey="name"
+ * 		placeHolder="Select Something"
+ * 		multipleSelect={false}
+ * 		searchOptions={{
+ * 			enableSearch: true,
+ * 			searchKeys: ["name"],
+ * 			caseSensitive: false,
+ * 			placeholder: "Search",
+ * 			alignIcon: "right",
+ * 		}}
+ * 	/>
+ */
+class Droplist extends Component {
 	constructor(props) {
 		super(props);
 		this.optionDivRef = React.createRef();
@@ -33,7 +53,7 @@ export class Droplist extends Component {
 	};
 
 	/**
-	 * @function
+	 * @function searchResultCallback
 	 * Retrieve filtered array of objects after performing search in dataList.
 	 * @param {Array} result
 	 */
@@ -42,7 +62,7 @@ export class Droplist extends Component {
 	};
 
 	/**
-	 * @function
+	 * @function removeSelectedOption
 	 * Clear selectedOption or all selectedOptions.
 	 */
 	removeSelectedOption = () => {
@@ -54,7 +74,7 @@ export class Droplist extends Component {
 	};
 
 	/**
-	 * @function
+	 * @function addToSelectedOptions
 	 * If multipleSelect is true, then selected option is added to selectedOptions Array.
 	 * @param {Object} option
 	 */
@@ -65,7 +85,7 @@ export class Droplist extends Component {
 	};
 
 	/**
-	 * @function
+	 * @function removeFromSelectedOptions
 	 * If multipleSelect is true, then selected option will be removed from selectedOptions Array.
 	 * @param {Object} option
 	 */
@@ -81,7 +101,7 @@ export class Droplist extends Component {
 	};
 
 	/**
-	 * @function
+	 * @function resultCallback
 	 * Return selectedOption.
 	 * @param {Object} option
 	 */
@@ -96,7 +116,7 @@ export class Droplist extends Component {
 
 	// UTIL functions
 	/**
-	 * @function
+	 * @function isSelected
 	 * Check if option is in selectedOptions. If yes return true else false.
 	 * @param {Object} option
 	 */
@@ -105,7 +125,8 @@ export class Droplist extends Component {
 	};
 
 	/**
-	 * Toggle optionsDiv
+	 * @function hideOptions
+	 * Toggle optionsDiv. If multipleSelect is true, execute selectedOptionCallback.
 	 * @param {Event} event
 	 */
 	hideOptions = (event) => {
@@ -123,6 +144,7 @@ export class Droplist extends Component {
 	};
 
 	/**
+	 * @function toggleDiv
 	 * Show / Hide optionsDiv
 	 */
 	toggleDiv = () => {
@@ -259,7 +281,7 @@ Droplist.propTypes = {
 	/**
 	 * Array of objects which should be rendered.
 	 */
-	dataList: PropTypes.arrayOf(Object).isRequired,
+	dataList: PropTypes.arrayOf(PropTypes.object).isRequired,
 	/**
 	 * Callback when selectedOption/selectedOptions are toggled.
 	 */
