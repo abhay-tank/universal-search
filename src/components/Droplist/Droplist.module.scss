@@ -1,6 +1,6 @@
 .droplistSelectDiv {
-	max-width: 80vw;
 	outline: none;
+	width: 50vw;
 	.droplistSelect {
 		display: flex;
 		align-items: center;
@@ -56,7 +56,7 @@
 			width: 90%;
 			margin: 1rem 5%;
 			&:hover {
-				background-color: rgb(2, 2, 2);
+				background-color: rgba(0, 0, 0, 0.616);
 				color: white;
 			}
 			* {
@@ -64,14 +64,13 @@
 			}
 			button {
 				box-sizing: border-box;
-				background-color: inherit;
+				background-color: transparent;
 				color: inherit;
 				font-size: inherit;
 				padding: 0.5rem;
 				max-width: inherit;
 				border: none;
 				text-align: left;
-				overflow-wrap: break-word;
 				&:focus {
 					outline: none;
 				}
@@ -88,10 +87,6 @@
 
 .iconButton {
 	cursor: pointer;
-}
-
-.hidden {
-	visibility: hidden;
 }
 
 .isSelected {

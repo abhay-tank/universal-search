@@ -10,7 +10,7 @@ import {
 	faCheckSquare as faCheckSquareSolid,
 	faTimesCircle,
 } from "@fortawesome/free-solid-svg-icons";
-import { faCheckSquare as faCheckSquareRegular } from "@fortawesome/free-regular-svg-icons";
+import { faSquare } from "@fortawesome/free-regular-svg-icons";
 
 /**
  * Renders a <Droplist /> component
@@ -32,23 +32,10 @@ import { faCheckSquare as faCheckSquareRegular } from "@fortawesome/free-regular
  * 	/>
  */
 class Droplist extends Component {
-	constructor(props) {
-		super(props);
-		this.optionDivRef = React.createRef();
-	}
-
 	state = {
 		filteredList: [],
 		showOptions: false,
 		selectedOptions: [],
-	};
-
-	componentDidUpdate = () => {
-		if (this.state.showOptions) {
-			this.optionDivRef.current.classList.remove(styles["hidden"]);
-		} else {
-			this.optionDivRef.current.classList.add(styles["hidden"]);
-		}
 	};
 
 	/**
@@ -122,11 +109,11 @@ class Droplist extends Component {
 		const { selectedOptionCallback, multipleSelect } = this.props;
 		const { selectedOptions } = this.state;
 		if (
-			event.currentTarget.id === event.target.id &&
+			event.currentTarget.id === "dropListSelect" &&
 			!event.currentTarget.contains(event.relatedTarget)
 		) {
 			this.toggleDiv();
-			if (multipleSelect) {
+			if (multipleSelect && selectedOptions.length) {
 				selectedOptionCallback(selectedOptions);
 			}
 		}
@@ -201,49 +188,46 @@ class Droplist extends Component {
 						/>
 					</div>
 				</div>
-				<div
-					ref={this.optionDivRef}
-					className={`${styles["droplistOptions"]} ${styles["hidden"]}`}
-				>
-					{searchOptions.enableSearch && (
-						<Searchbar
-							dataList={dataList}
-							searchKeys={searchOptions.searchKeys}
-							resultCallback={this.searchResultCallback}
-							alignIcon={searchOptions.alignIcon}
-							caseSensitive={searchOptions.caseSensitive}
-							autoFocus={true}
-							placeholder={searchOptions.placeholder}
-							autoComplete={false}
-						/>
-					)}
-					{optionList.map((option, index) => {
-						return (
-							<div
-								className={`${styles["option"]} ${
-									this.isSelected(option) ? styles["isSelected"] : ""
-								}`}
-								onClick={() => {
-									this.addSelectedOption(option);
-								}}
-								key={index}
-							>
-								{multipleSelect ? (
-									<FontAwesomeIcon
-										icon={
-											this.isSelected(option)
-												? faCheckSquareSolid
-												: faCheckSquareRegular
-										}
-									/>
-								) : (
-									<></>
-								)}
-								<button id={option[displayKey]}>{option[displayKey]}</button>
-							</div>
-						);
-					})}
-				</div>
+				{showOptions && (
+					<div className={`${styles["droplistOptions"]}`}>
+						{searchOptions.enableSearch && (
+							<Searchbar
+								dataList={dataList}
+								searchKeys={searchOptions.searchKeys}
+								resultCallback={this.searchResultCallback}
+								alignIcon={searchOptions.alignIcon}
+								caseSensitive={searchOptions.caseSensitive}
+								autoFocus={true}
+								placeholder={searchOptions.placeholder}
+								autoComplete={false}
+							/>
+						)}
+						{optionList.map((option, index) => {
+							return (
+								<div
+									className={`${styles["option"]} ${
+										this.isSelected(option) ? styles["isSelected"] : ""
+									}`}
+									onClick={() => {
+										this.addSelectedOption(option);
+									}}
+									key={index}
+								>
+									{multipleSelect ? (
+										<FontAwesomeIcon
+											icon={
+												this.isSelected(option) ? faCheckSquareSolid : faSquare
+											}
+										/>
+									) : (
+										<></>
+									)}
+									<button id={option[displayKey]}>{option[displayKey]}</button>
+								</div>
+							);
+						})}
+					</div>
+				)}
 			</div>
 		);
 	}
